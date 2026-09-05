@@ -1,0 +1,18 @@
+
+name: precious-md-watson
+sessions:
+  - name: precious-session
+    components:
+      - name: bot
+        type: service
+        image: node:20
+        build:
+          command: npm install
+        run:
+          command: node index.js
+        env:
+          - key: PORT
+            value: "9090"
+        ports:
+          - port: 9090
+            protocol: http

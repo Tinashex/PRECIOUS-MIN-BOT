@@ -1,0 +1,12 @@
+services:
+  - type: worker
+    name: precious-md-watson
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: NODE_VERSION
+        value: 20.0.0
+      - key: PORT
+        value: 9090
