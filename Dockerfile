@@ -1,14 +1,22 @@
-FROM node:20-bullseye
-USER root
+FROM node:20
+
+# Install required packages
 RUN apt-get update && \
-    apt-get install -y ffmpeg webp git && \
-    apt-get upgrade -y && \
+    apt-get install -y ffmpeg imagemagick webp && \
     rm -rf /var/lib/apt/lists/*
-USER node
-RUN git clone https://github.com/watson-xd6/WATSON-XD-BOT.git /home/node/WATSON-XD-BOT 
-WORKDIR /home/node/WATSON-XD-BOT 
-RUN chmod -R 777 /home/node/WATSON-XD-BOT/
-RUN yarn install --network-concurrency 1 --ignore-engines
-EXPOSE 7860
-ENV NODE_ENV=production
+
+# Set working directory (fix here 👇)
+WORKDIR /app
+
+# Copy package.json and install dependencies
+COPY package.json ./
+RUN npm install && npm install -g pm2 qrcode-terminal
+
+# Copy rest of the code
+COPY . .
+
+# Expose port
+EXPOSE 5000
+
+# Start the app
 CMD ["npm", "start"]
